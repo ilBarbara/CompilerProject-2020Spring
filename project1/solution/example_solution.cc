@@ -50,7 +50,7 @@ void kernel_example(float (&B)[32][16], float (&C)[32][16], float (&A)[32][16]) 
     else
         ofile << cheat_src;
     //演示返回的是id节点。下面这一行进行类型强转，访问id节点的value属性，输出到example.cc里，所以make的时候会报错。
-    ofile << ((std::dynamic_pointer_cast<const Boost::Internal::StringImm>(myroot.real_ptr()))->value());
+    ofile << ((std::dynamic_pointer_cast<const Boost::Internal::Var>(myroot.real_ptr()))->shape[0]);
     ofile.close();
     return 0;
 }

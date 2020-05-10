@@ -71,6 +71,7 @@
 #line 1 ".\\second.y"
 
 #include "../../include/IR.h"
+#include "../../include/actions.h"
 #include "lex.yy.c"
 extern double yylval_doubletmp;
 extern int yylval_inttmp;
@@ -79,7 +80,7 @@ YYSTYPE myroot;
 
 
 /* Line 189 of yacc.c  */
-#line 83 "y.tab.c"
+#line 84 "y.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -145,7 +146,7 @@ typedef int YYSTYPE;
 
 
 /* Line 264 of yacc.c  */
-#line 149 "y.tab.c"
+#line 150 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -438,9 +439,9 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    16,    16,    17,    20,    22,    25,    26,    27,    28,
-      29,    30,    31,    32,    33,    36,    38,    40,    41,    43,
-      44,    47,    48,    49,    50,    51,    52,    55,    56
+       0,    17,    17,    18,    21,    23,    26,    27,    28,    29,
+      30,    31,    32,    33,    34,    37,    39,    41,    42,    44,
+      45,    48,    49,    50,    51,    52,    53,    56,    57
 };
 #endif
 
@@ -1372,189 +1373,189 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 16 ".\\second.y"
+#line 17 ".\\second.y"
     {printf("happy");}
     break;
 
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 17 ".\\second.y"
+#line 18 ".\\second.y"
     {;}
     break;
 
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 20 ".\\second.y"
+#line 21 ".\\second.y"
     {;}
     break;
 
   case 6:
 
 /* Line 1455 of yacc.c  */
-#line 25 ".\\second.y"
+#line 26 ".\\second.y"
     {;}
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 26 ".\\second.y"
+#line 27 ".\\second.y"
     {;}
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 27 ".\\second.y"
+#line 28 ".\\second.y"
     {;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 28 ".\\second.y"
+#line 29 ".\\second.y"
     {;}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 29 ".\\second.y"
+#line 30 ".\\second.y"
     {;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 30 ".\\second.y"
+#line 31 ".\\second.y"
     {;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 31 ".\\second.y"
+#line 32 ".\\second.y"
     {;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 32 ".\\second.y"
+#line 33 ".\\second.y"
     {;}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 33 ".\\second.y"
+#line 34 ".\\second.y"
     {;}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 36 ".\\second.y"
+#line 37 ".\\second.y"
     {;}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 38 ".\\second.y"
+#line 39 ".\\second.y"
     {;}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 40 ".\\second.y"
-    {;}
+#line 41 ".\\second.y"
+    {myroot=Clist_action_1((yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]));}
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 41 ".\\second.y"
-    {;}
+#line 42 ".\\second.y"
+    {(yyval)=Clist_action_2((yyvsp[(1) - (1)]));}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 43 ".\\second.y"
-    {;}
+#line 44 ".\\second.y"
+    {(yyval)=Alist_action_1((yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]));}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 44 ".\\second.y"
-    {myroot=(yyvsp[(1) - (1)]);}
+#line 45 ".\\second.y"
+    {(yyval)=Alist_action_2((yyvsp[(1) - (1)]));}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 47 ".\\second.y"
-    {;}
+#line 48 ".\\second.y"
+    {(yyval)=(yyvsp[(1) - (1)]);}
     break;
 
   case 22:
-
-/* Line 1455 of yacc.c  */
-#line 48 ".\\second.y"
-    {;}
-    break;
-
-  case 23:
 
 /* Line 1455 of yacc.c  */
 #line 49 ".\\second.y"
     {;}
     break;
 
-  case 24:
+  case 23:
 
 /* Line 1455 of yacc.c  */
 #line 50 ".\\second.y"
     {;}
     break;
 
-  case 25:
+  case 24:
 
 /* Line 1455 of yacc.c  */
 #line 51 ".\\second.y"
     {;}
     break;
 
-  case 26:
+  case 25:
 
 /* Line 1455 of yacc.c  */
 #line 52 ".\\second.y"
     {;}
     break;
 
+  case 26:
+
+/* Line 1455 of yacc.c  */
+#line 53 ".\\second.y"
+    {;}
+    break;
+
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 55 ".\\second.y"
-    {;}
+#line 56 ".\\second.y"
+    {(yyval)=(yyvsp[(1) - (1)]);}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 56 ".\\second.y"
-    {;}
+#line 57 ".\\second.y"
+    {(yyval)=(yyvsp[(1) - (1)]);}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1558 "y.tab.c"
+#line 1559 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1766,7 +1767,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 59 ".\\second.y"
+#line 60 ".\\second.y"
 
 YYSTYPE yyparse_string(char * str)
 {
