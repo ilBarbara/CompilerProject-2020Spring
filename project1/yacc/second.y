@@ -7,7 +7,7 @@ extern int yylval_inttmp;
 int yyerror(char*);
 YYSTYPE myroot;
 %}
-%token Id INTEGER FLOAT DELIM WHITESPACE LEFTBRACKET RIGHTBRACKET LEFTANGLE RIGHTANGLE 
+%token Id INTEGER FLOAT DELIM WHITESPACE
 
 %left '+' '-'
 %left '*' '/' EXACTLYDIVIDE '%'
@@ -18,27 +18,28 @@ P :  P S {printf("happy");}
     |S {;}
     ;
 
-S : LHS '=' RHS ';' {;}
+S : LHS '=' RHS ';' {myroot=$3;}
 
 LHS : TRef
 
 
-RHS: RHS '+' RHS {;}
-    |RHS '*' RHS {;}
-    |RHS '-' RHS {;}
-    |RHS '/' RHS {;} 
-    |RHS '%' RHS {;} 
-    |RHS EXACTLYDIVIDE RHS {;}
-    |TRef {;}
-    |SRef {;}
-    |Const {;}
+RHS: RHS '+' RHS {$$=RHS_1($1,$3);}
+    |RHS '*' RHS {$$=RHS_2($1,$3);}
+    |RHS '-' RHS {$$=RHS_3($1,$3);}
+    |RHS '/' RHS {$$=RHS_4($1,$3);} 
+    |RHS '%' RHS {$$=RHS_5($1,$3);} 
+    |RHS EXACTLYDIVIDE RHS {$$=RHS_6($1,$3);}
+    |TRef {$$=RHS_7($1);}
+    |SRef {$$=RHS_7($1);}
+    |Const {$$=RHS_8($1);}
+    |'(' RHS ')' {$$=RHS_9($2);}
     ;
     
 TRef : Id '<' Clist '>' '[' Alist ']' {;}
 
 SRef : Id '<' Clist '>' {;}
 
-Clist :  Clist ',' INTEGER {myroot=Clist_action_1($1,$3);}
+Clist :  Clist ',' INTEGER {$$=Clist_action_1($1,$3);}
         |INTEGER {$$=Clist_action_2($1);}
         ;
 Alist :  Alist ',' IdExpr {$$=Alist_action_1($1,$3);}

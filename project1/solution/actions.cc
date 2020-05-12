@@ -36,3 +36,79 @@ DEFAULT_TYPE Clist_action_2(DEFAULT_TYPE TOKEN_INTEGER)
     Clist_ptr->shape.push_back(INTEGER_ptr->value());
     return DEFAULT_TYPE(Clist_ptr);
 }
+DEFAULT_TYPE RHS_1(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
+{
+    //ADD
+    //RHS:Expr
+    Boost::Internal::Expr RHS_1_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_1.real_ptr()));
+    Boost::Internal::Expr RHS_2_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_2.real_ptr()));
+    std::shared_ptr<Boost::Internal::Binary> RHS_ptr = std::make_shared<Boost::Internal::Binary>(Boost::Internal::Type::float_scalar(32), Boost::Internal::BinaryOpType::Add, RHS_1_ptr, RHS_2_ptr);
+    return DEFAULT_TYPE(RHS_ptr);
+};
+DEFAULT_TYPE RHS_2(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
+{
+    //MUL
+    //RHS:Expr
+    Boost::Internal::Expr RHS_1_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_1.real_ptr()));
+    Boost::Internal::Expr RHS_2_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_2.real_ptr()));
+    std::shared_ptr<Boost::Internal::Binary> RHS_ptr = std::make_shared<Boost::Internal::Binary>(Boost::Internal::Type::float_scalar(32), Boost::Internal::BinaryOpType::Mul, RHS_1_ptr, RHS_2_ptr);
+    return DEFAULT_TYPE(RHS_ptr);
+};
+DEFAULT_TYPE RHS_3(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
+{
+    //SUB
+    //RHS:Expr
+    Boost::Internal::Expr RHS_1_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_1.real_ptr()));
+    Boost::Internal::Expr RHS_2_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_2.real_ptr()));
+    std::shared_ptr<Boost::Internal::Binary> RHS_ptr = std::make_shared<Boost::Internal::Binary>(Boost::Internal::Type::float_scalar(32), Boost::Internal::BinaryOpType::Sub, RHS_1_ptr, RHS_2_ptr);
+    return DEFAULT_TYPE(RHS_ptr);
+};
+DEFAULT_TYPE RHS_4(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
+{
+    //DIV
+    //RHS:Expr
+    Boost::Internal::Expr RHS_1_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_1.real_ptr()));
+    Boost::Internal::Expr RHS_2_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_2.real_ptr()));
+    std::shared_ptr<Boost::Internal::Binary> RHS_ptr = std::make_shared<Boost::Internal::Binary>(Boost::Internal::Type::float_scalar(32), Boost::Internal::BinaryOpType::Div, RHS_1_ptr, RHS_2_ptr);
+    return DEFAULT_TYPE(RHS_ptr);
+};
+DEFAULT_TYPE RHS_5(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
+{
+    //Mod
+    //RHS:Expr
+    Boost::Internal::Expr RHS_1_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_1.real_ptr()));
+    Boost::Internal::Expr RHS_2_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_2.real_ptr()));
+    std::shared_ptr<Boost::Internal::Binary> RHS_ptr = std::make_shared<Boost::Internal::Binary>(Boost::Internal::Type::float_scalar(32), Boost::Internal::BinaryOpType::Mod, RHS_1_ptr, RHS_2_ptr);
+    return DEFAULT_TYPE(RHS_ptr);
+};
+DEFAULT_TYPE RHS_6(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
+{
+    //ExactlyDiv
+    //RHS:Expr
+    Boost::Internal::Expr RHS_1_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_1.real_ptr()));
+    Boost::Internal::Expr RHS_2_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_2.real_ptr()));
+    std::shared_ptr<Boost::Internal::Binary> RHS_ptr = std::make_shared<Boost::Internal::Binary>(Boost::Internal::Type::float_scalar(32), Boost::Internal::BinaryOpType::ExactlyDiv, RHS_1_ptr, RHS_2_ptr);
+    return DEFAULT_TYPE(RHS_ptr);
+};
+DEFAULT_TYPE RHS_7(DEFAULT_TYPE RHS_1)
+{
+    //TRef:Ref<Var>
+    //SRef:Ref<Var>
+    Boost::Internal::Expr RHS_1_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::Var>(RHS_1.real_ptr()));
+    return RHS_1_ptr;
+};
+DEFAULT_TYPE RHS_8(DEFAULT_TYPE RHS_1)
+{
+    //RHS:Expr
+    //Const:Expr
+    Boost::Internal::Expr RHS_1_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_1.real_ptr()));
+    return RHS_1_ptr;
+};
+DEFAULT_TYPE RHS_9(DEFAULT_TYPE RHS_1)
+{
+    //brackets
+    //RHS:Expr
+    Boost::Internal::Expr RHS_1_ptr = Boost::Internal::Expr(std::dynamic_pointer_cast<const Boost::Internal::ExprNode>(RHS_1.real_ptr()));
+    std::shared_ptr<Boost::Internal::Unary> RHS_ptr = std::make_shared<Boost::Internal::Unary>(Boost::Internal::Type::float_scalar(32), Boost::Internal::UnaryOpType::Bracket, RHS_1_ptr);
+    return RHS_ptr;
+};
