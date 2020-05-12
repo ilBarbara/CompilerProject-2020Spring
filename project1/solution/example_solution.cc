@@ -42,14 +42,8 @@ void kernel_example(float (&B)[32][16], float (&C)[32][16], float (&A)[32][16]) 
     }
     std::string str = root["kernel"].asString();
 
-    myroot = yyparse_string((char *)("A<16, 32>[i, j] = A<16, 32>[i, j] + alpha<1> * (B<16, 32>[i, k] * C<32, 32>[k, j]);A<16, 32>[i, j] = A<16, 32>[i, j] + alpha<1> * (B<16, 32>[i, k] * C<32, 32>[k, j]);"));
-    Boost::Internal::IRNodeType nodetype;
-    nodetype = Boost::Internal::IRNodeType::Kernel;
-    bool flag = (nodetype == Boost::Internal::IRNodeType::Kernel);
-    if (flag)
-        ofile << cheat_src;
-    else
-        ofile << cheat_src;
+    myroot = yyparse_string((char *)(str.c_str()));
+    ofile << cheat_src;
     //演示返回的是id节点。下面这一行进行类型强转，访问id节点的value属性，输出到example.cc里，所以make的时候会报错。
     ofile << (std::dynamic_pointer_cast<const Boost::Internal::Kernel>(myroot.real_ptr())->stmt_list.size());
     ofile << str;

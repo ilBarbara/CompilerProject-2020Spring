@@ -50,12 +50,12 @@ Alist :  Alist ',' IdExpr {$$=Alist_action_1($1,$3);}
         ;
 
 IdExpr : Id {$$=$1;}
-        |IdExpr '+' IdExpr {;}
-        |IdExpr '+' INTEGER {;}
-        |IdExpr '*' INTEGER {;}
-        |IdExpr EXACTLYDIVIDE INTEGER {;}
-        |IdExpr '%' INTEGER {;}
-        |'(' IdExpr ')' {;}
+        |IdExpr '+' IdExpr {$$=IdExpr_action_1($1,$3);}
+        |IdExpr '+' INTEGER {$$=IdExpr_action_1($1,$3);}
+        |IdExpr '*' INTEGER {$$=IdExpr_action_2($1,$3);}
+        |IdExpr EXACTLYDIVIDE INTEGER {$$=IdExpr_action_3($1,$3);}
+        |IdExpr '%' INTEGER {$$=IdExpr_action_4($1,$3);}
+        |'(' IdExpr ')' {$$=IdExpr_action_5($1);}
         ;
 
 Const :  FLOAT {$$=$1;}

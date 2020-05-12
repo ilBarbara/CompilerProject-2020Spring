@@ -1530,42 +1530,42 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 53 ".\\second.y"
-    {;}
+    {(yyval)=IdExpr_action_1((yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]));}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
 #line 54 ".\\second.y"
-    {;}
+    {(yyval)=IdExpr_action_1((yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]));}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
 #line 55 ".\\second.y"
-    {;}
+    {(yyval)=IdExpr_action_2((yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]));}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
 #line 56 ".\\second.y"
-    {;}
+    {(yyval)=IdExpr_action_3((yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]));}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
 #line 57 ".\\second.y"
-    {;}
+    {(yyval)=IdExpr_action_4((yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]));}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
 #line 58 ".\\second.y"
-    {;}
+    {(yyval)=IdExpr_action_5((yyvsp[(1) - (3)]));}
     break;
 
   case 30:
