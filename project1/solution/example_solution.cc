@@ -11,6 +11,8 @@
 #include "../../3rdparty/jsoncpp/include/json/json.h"
 #include "../../include/mytest.h"
 #include "../../include/y.tab.h"
+
+extern std::map<std::string, std::pair<int, int>> global_map;
 int main()
 {
     std::string cheat_src =
@@ -45,8 +47,9 @@ void kernel_example(float (&B)[32][16], float (&C)[32][16], float (&A)[32][16]) 
     myroot = yyparse_string((char *)(str.c_str()));
     ofile << cheat_src;
     //演示返回的是id节点。下面这一行进行类型强转，访问id节点的value属性，输出到example.cc里，所以make的时候会报错。
-    ofile << (std::dynamic_pointer_cast<const Boost::Internal::Kernel>(myroot.real_ptr())->stmt_list.size());
-    ofile << str;
+    // ofile << (std::dynamic_pointer_cast<const Boost::Internal::Kernel>(myroot.real_ptr())->stmt_list.size());
+    // ofile << str;
+    ofile << global_map.size();
     ofile.close();
     return 0;
 }

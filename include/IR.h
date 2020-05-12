@@ -188,7 +188,10 @@ namespace Boost
         public:
             std::set<std::string> variables;
 
-            void set_boundary(std::map<std::string, std::pair<int, int>> &global_map, std::pair<int, int> bound) {}
+            virtual void set_boundary(std::map<std::string, std::pair<int, int>> &global_map, std::pair<int, int> bound) const
+            {
+                exit(bound.second);
+            };
 
             ExprNode(Type _type, const IRNodeType node_type) : IRNode(node_type), type_(_type) {}
 
@@ -346,7 +349,7 @@ namespace Boost
 
             static const IRNodeType node_type_ = IRNodeType::StringImm;
 
-            void set_boundary(std::map<std::string, std::pair<int, int>> &global_map, std::pair<int, int> bound)
+            void set_boundary(std::map<std::string, std::pair<int, int>> &global_map, std::pair<int, int> bound) const
             {
                 global_map.insert(std::make_pair(value_, bound));
             }
@@ -577,7 +580,7 @@ namespace Boost
             {
                 return std::make_shared<const Unary>(t, _op_type, _a);
             }
-            void set_boundary(std::map<std::string, std::pair<int, int>> &global_map, std::pair<int, int> bound)
+            void set_boundary(std::map<std::string, std::pair<int, int>> &global_map, std::pair<int, int> bound) const
             {
                 std::const_pointer_cast<ExprNode>(a.real_ptr())->set_boundary(global_map, bound);
             }
@@ -620,7 +623,7 @@ namespace Boost
 
             static const IRNodeType node_type_ = IRNodeType::Binary;
 
-            void set_boundary(std::map<std::string, std::pair<int, int>> &global_map, std::pair<int, int> bound)
+            void set_boundary(std::map<std::string, std::pair<int, int>> &global_map, std::pair<int, int> bound) const
             {
                 if (op_type == BinaryOpType::Add)
                 {

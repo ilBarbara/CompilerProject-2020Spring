@@ -2,7 +2,7 @@
 
 using namespace Boost::Internal;
 #define DEFAULT_TYPE Ref<const IRNode>
-
+std::map<std::string, std::pair<int, int>> global_map;
 DEFAULT_TYPE Alist_action_1(DEFAULT_TYPE Alist, DEFAULT_TYPE IdExpr)
 {
     //Alist:Ref<Var>
@@ -121,6 +121,16 @@ DEFAULT_TYPE MyTRefBuilder(DEFAULT_TYPE val, DEFAULT_TYPE clist, DEFAULT_TYPE al
     std::shared_ptr<Var> clist_ptr = std::const_pointer_cast<Var>(std::dynamic_pointer_cast<const Var>(clist.real_ptr()));
     std::shared_ptr<Var> alist_ptr = std::const_pointer_cast<Var>(std::dynamic_pointer_cast<const Var>(alist.real_ptr()));
     std::shared_ptr<Var> tref_ptr = std::make_shared<Var>(Type::float_scalar(32), Id_ptr->value(), alist_ptr->args, clist_ptr->shape);
+    if (alist_ptr->args.size() != clist_ptr->shape.size())
+    {
+        exit(-1);
+    }
+    int len = clist_ptr->shape.size();
+    for (int i = 0; i < len; i++)
+    {
+        size_t rbound = clist_ptr->shape[i];
+        alist_ptr->args[i].real_ptr()->set_boundary(global_map, std::make_pair(0, rbound));
+    }
     return DEFAULT_TYPE(tref_ptr);
 };
 

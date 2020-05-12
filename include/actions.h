@@ -2,6 +2,7 @@
 
 #ifndef MYACTIONS
 #define MYACTIONS
+
 Boost::Internal::Ref<const Boost::Internal::IRNode> Alist_action_1(Boost::Internal::Ref<const Boost::Internal::IRNode> Alist, Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr);
 
 Boost::Internal::Ref<const Boost::Internal::IRNode> Alist_action_2(Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr);
