@@ -6,18 +6,18 @@ std::map<std::string, std::pair<int, int>> global_map;
 DEFAULT_TYPE Alist_action_1(DEFAULT_TYPE Alist, DEFAULT_TYPE IdExpr)
 {
     //Alist:Ref<Var>
-    //IdExpr:Ref<StringImm>
+    //IdExpr:Ref<ExprNode>
     std::shared_ptr<Var> Alist_ptr = std::const_pointer_cast<Var>(std::dynamic_pointer_cast<const Var>(Alist.real_ptr()));
-    std::shared_ptr<const StringImm> IdExpr_ptr = std::dynamic_pointer_cast<const StringImm>(IdExpr.real_ptr());
+    std::shared_ptr<const ExprNode> IdExpr_ptr = std::dynamic_pointer_cast<const ExprNode>(IdExpr.real_ptr());
     Alist_ptr->args.push_back(Expr(IdExpr_ptr));
     return DEFAULT_TYPE(Alist_ptr);
 }
 
 DEFAULT_TYPE Alist_action_2(DEFAULT_TYPE IdExpr)
 {
-    ////IdExpr:Ref<StringImm>
+    ////IdExpr:Ref<ExprNode>
     std::shared_ptr<Var> Alist_ptr = std::make_shared<Var>(Type::int_scalar(32), "", std::vector<Expr>(), std::vector<size_t>());
-    std::shared_ptr<const StringImm> IdExpr_ptr = std::dynamic_pointer_cast<const StringImm>(IdExpr.real_ptr());
+    std::shared_ptr<const ExprNode> IdExpr_ptr = std::dynamic_pointer_cast<const ExprNode>(IdExpr.real_ptr());
     Alist_ptr->args.push_back(Expr(IdExpr_ptr));
     return DEFAULT_TYPE(Alist_ptr);
 }

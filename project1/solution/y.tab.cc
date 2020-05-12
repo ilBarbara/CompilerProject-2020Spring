@@ -1523,7 +1523,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 52 ".\\second.y"
-    {(yyval)=(yyvsp[(1) - (1)]);}
+    {(yyval)=IdExpr_action_0((yyvsp[(1) - (1)]));}
     break;
 
   case 24:
@@ -1565,7 +1565,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 58 ".\\second.y"
-    {(yyval)=IdExpr_action_5((yyvsp[(1) - (3)]));}
+    {(yyval)=IdExpr_action_5((yyvsp[(2) - (3)]));}
     break;
 
   case 30:

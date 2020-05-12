@@ -55,7 +55,7 @@ IdExpr : Id {$$=IdExpr_action_0($1);}
         |IdExpr '*' INTEGER {$$=IdExpr_action_2($1,$3);}
         |IdExpr EXACTLYDIVIDE INTEGER {$$=IdExpr_action_3($1,$3);}
         |IdExpr '%' INTEGER {$$=IdExpr_action_4($1,$3);}
-        |'(' IdExpr ')' {$$=IdExpr_action_5($1);}
+        |'(' IdExpr ')' {$$=IdExpr_action_5($2);}
         ;
 
 Const :  FLOAT {$$=$1;}
