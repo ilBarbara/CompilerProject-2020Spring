@@ -27,6 +27,10 @@
 
 #include <memory>
 #include <string>
+#include <set>
+#include <map>
+#include <algorithm>
+#include <math.h>
 
 #include "type.h"
 #include "arith.h"
@@ -182,6 +186,10 @@ namespace Boost
             Type type_;
 
         public:
+            std::set<std::string> variables;
+
+            void set_boundary(std::map<std::string, std::pair<int, int>> &global_map, std::pair<int, int> bound) {}
+
             ExprNode(Type _type, const IRNodeType node_type) : IRNode(node_type), type_(_type) {}
 
             virtual ~ExprNode() = default;
@@ -337,6 +345,11 @@ namespace Boost
             }
 
             static const IRNodeType node_type_ = IRNodeType::StringImm;
+
+            void set_boundary(std::map<std::string, std::pair<int, int>> &global_map, std::pair<int, int> bound)
+            {
+                global_map.insert(std::make_pair(value_, bound));
+            }
         };
 
         /**
@@ -564,6 +577,10 @@ namespace Boost
             {
                 return std::make_shared<const Unary>(t, _op_type, _a);
             }
+            void set_boundary(std::map<std::string, std::pair<int, int>> &global_map, std::pair<int, int> bound)
+            {
+                std::const_pointer_cast<ExprNode>(a.real_ptr())->set_boundary(global_map, bound);
+            }
 
             static const IRNodeType node_type_ = IRNodeType::Unary;
         };
@@ -602,6 +619,36 @@ namespace Boost
             }
 
             static const IRNodeType node_type_ = IRNodeType::Binary;
+
+            void set_boundary(std::map<std::string, std::pair<int, int>> &global_map, std::pair<int, int> bound)
+            {
+                if (op_type == BinaryOpType::Add)
+                {
+                    if (b.node_type() == IRNodeType::IntImm)
+                    {
+                        int int_num = std::dynamic_pointer_cast<const IntImm>(b.real_ptr())->value();
+                        int lbound = std::max(bound.first - int_num, 0);
+                        int rbound = std::max(bound.second - int_num, 0);
+                        std::const_pointer_cast<ExprNode>(a.real_ptr())
+                            ->set_boundary(global_map, std::make_pair(lbound, rbound));
+                    }
+                    else
+                    {
+                        std::const_pointer_cast<ExprNode>(a.real_ptr())
+                            ->set_boundary(global_map, bound);
+                        std::const_pointer_cast<ExprNode>(b.real_ptr())
+                            ->set_boundary(global_map, bound);
+                    }
+                }
+                else if (op_type == BinaryOpType::Mul)
+                {
+                    int int_num = std::dynamic_pointer_cast<const IntImm>(b.real_ptr())->value();
+                    int lbound = std::max(int(std::ceil(double(bound.first) / int_num)), 0);
+                    int rbound = std::max(int(std::floor(double(bound.second) / int_num)), 0);
+                    std::const_pointer_cast<ExprNode>(a.real_ptr())
+                        ->set_boundary(global_map, std::make_pair(lbound, rbound));
+                }
+            }
         };
 
         enum class CompareOpType : uint8_t

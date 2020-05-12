@@ -155,12 +155,24 @@ DEFAULT_TYPE P_action_2(DEFAULT_TYPE S)
     return DEFAULT_TYPE(kernal);
 }
 
+DEFAULT_TYPE IdExpr_action_0(DEFAULT_TYPE Id)
+{
+    //Id
+    std::shared_ptr<StringImm> Id_ptr = std::const_pointer_cast<StringImm>(std::dynamic_pointer_cast<const StringImm>(Id.real_ptr()));
+    Id_ptr->variables.insert(Id_ptr->value());
+    return Id_ptr;
+}
+
 DEFAULT_TYPE IdExpr_action_1(DEFAULT_TYPE IdExpr_1, DEFAULT_TYPE IdExpr_2)
 {
     //ADD
     Expr IdExpr_1_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(IdExpr_1.real_ptr()));
     Expr IdExpr_2_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(IdExpr_2.real_ptr()));
     std::shared_ptr<Binary> ptr = std::make_shared<Binary>(Type::float_scalar(32), BinaryOpType::Add, IdExpr_1_ptr, IdExpr_2_ptr);
+    for (std::string item : (IdExpr_1_ptr->variables))
+        ptr->variables.insert(item);
+    for (std::string item : (IdExpr_2_ptr->variables))
+        ptr->variables.insert(item);
     return ptr;
 }
 
@@ -170,6 +182,10 @@ DEFAULT_TYPE IdExpr_action_2(DEFAULT_TYPE IdExpr_1, DEFAULT_TYPE IdExpr_2)
     Expr IdExpr_1_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(IdExpr_1.real_ptr()));
     Expr IdExpr_2_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(IdExpr_2.real_ptr()));
     std::shared_ptr<Binary> ptr = std::make_shared<Binary>(Type::float_scalar(32), BinaryOpType::Mul, IdExpr_1_ptr, IdExpr_2_ptr);
+    for (std::string item : (IdExpr_1_ptr->variables))
+        ptr->variables.insert(item);
+    for (std::string item : (IdExpr_2_ptr->variables))
+        ptr->variables.insert(item);
     return ptr;
 }
 DEFAULT_TYPE IdExpr_action_3(DEFAULT_TYPE IdExpr_1, DEFAULT_TYPE IdExpr_2)
@@ -178,6 +194,10 @@ DEFAULT_TYPE IdExpr_action_3(DEFAULT_TYPE IdExpr_1, DEFAULT_TYPE IdExpr_2)
     Expr IdExpr_1_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(IdExpr_1.real_ptr()));
     Expr IdExpr_2_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(IdExpr_2.real_ptr()));
     std::shared_ptr<Binary> ptr = std::make_shared<Binary>(Type::float_scalar(32), BinaryOpType::ExactlyDiv, IdExpr_1_ptr, IdExpr_2_ptr);
+    for (std::string item : (IdExpr_1_ptr->variables))
+        ptr->variables.insert(item);
+    for (std::string item : (IdExpr_2_ptr->variables))
+        ptr->variables.insert(item);
     return ptr;
 }
 DEFAULT_TYPE IdExpr_action_4(DEFAULT_TYPE IdExpr_1, DEFAULT_TYPE IdExpr_2)
@@ -186,6 +206,10 @@ DEFAULT_TYPE IdExpr_action_4(DEFAULT_TYPE IdExpr_1, DEFAULT_TYPE IdExpr_2)
     Expr IdExpr_1_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(IdExpr_1.real_ptr()));
     Expr IdExpr_2_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(IdExpr_2.real_ptr()));
     std::shared_ptr<Binary> ptr = std::make_shared<Binary>(Type::float_scalar(32), BinaryOpType::Mod, IdExpr_1_ptr, IdExpr_2_ptr);
+    for (std::string item : (IdExpr_1_ptr->variables))
+        ptr->variables.insert(item);
+    for (std::string item : (IdExpr_2_ptr->variables))
+        ptr->variables.insert(item);
     return ptr;
 }
 DEFAULT_TYPE IdExpr_action_5(DEFAULT_TYPE IdExpr_1)
@@ -193,5 +217,6 @@ DEFAULT_TYPE IdExpr_action_5(DEFAULT_TYPE IdExpr_1)
     //Bracket
     Expr IdExpr_1_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(IdExpr_1.real_ptr()));
     std::shared_ptr<Unary> ptr = std::make_shared<Unary>(Type::float_scalar(32), UnaryOpType::Bracket, IdExpr_1_ptr);
+    ptr->variables = IdExpr_1_ptr->variables;
     return ptr;
 }

@@ -49,7 +49,7 @@ Alist :  Alist ',' IdExpr {$$=Alist_action_1($1,$3);}
         |IdExpr {$$=Alist_action_2($1);}
         ;
 
-IdExpr : Id {$$=$1;}
+IdExpr : Id {$$=IdExpr_action_0($1);}
         |IdExpr '+' IdExpr {$$=IdExpr_action_1($1,$3);}
         |IdExpr '+' INTEGER {$$=IdExpr_action_1($1,$3);}
         |IdExpr '*' INTEGER {$$=IdExpr_action_2($1,$3);}

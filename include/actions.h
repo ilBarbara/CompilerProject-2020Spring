@@ -38,6 +38,8 @@ Boost::Internal::Ref<const Boost::Internal::IRNode> P_action_1(Boost::Internal::
 
 Boost::Internal::Ref<const Boost::Internal::IRNode> P_action_2(Boost::Internal::Ref<const Boost::Internal::IRNode> S);
 
+Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_action_0(Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_1);
+
 Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_action_1(Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_1, Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_2);
 
 Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_action_2(Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_1, Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_2);
