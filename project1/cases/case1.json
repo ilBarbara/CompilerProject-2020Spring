@@ -5,5 +5,5 @@
         "A"
     ],
     "data_type": "float",
-    "kernel": "A<32, 16>[i, j] = (2);"
+    "kernel": "A<32, 16>[i, j] = 2;"
 }

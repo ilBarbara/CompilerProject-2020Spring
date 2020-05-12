@@ -14,13 +14,16 @@ YYSTYPE myroot;
 %nonassoc '='
 
 %%
-P :  P S {printf("happy");}
-    |S {;}
+
+FINAL : P {myroot=$1;}
+
+P :  P S {$$=P_action_1($1,$2);}
+    |S {$$=P_action_2($1);}
     ;
 
-S : LHS '=' RHS ';' {myroot=$3;}
+S : LHS '=' RHS ';' {$$=MySBuilder($1,$3);}
 
-LHS : TRef
+LHS : TRef {$$=RHS_7($1);}
 
 
 RHS: RHS '+' RHS {$$=RHS_1($1,$3);}
@@ -35,9 +38,9 @@ RHS: RHS '+' RHS {$$=RHS_1($1,$3);}
     |'(' RHS ')' {$$=RHS_9($2);}
     ;
     
-TRef : Id '<' Clist '>' '[' Alist ']' {;}
+TRef : Id '<' Clist '>' '[' Alist ']' {$$=MyTRefBuilder($1,$3,$6);}
 
-SRef : Id '<' Clist '>' {;}
+SRef : Id '<' Clist '>' {$$=MySRefBuilder($1,$3);}
 
 Clist :  Clist ',' INTEGER {$$=Clist_action_1($1,$3);}
         |INTEGER {$$=Clist_action_2($1);}
@@ -52,6 +55,7 @@ IdExpr : Id {$$=$1;}
         |IdExpr '*' INTEGER {;}
         |IdExpr EXACTLYDIVIDE INTEGER {;}
         |IdExpr '%' INTEGER {;}
+        |'(' IdExpr ')' {;}
         ;
 
 Const :  FLOAT {$$=$1;}

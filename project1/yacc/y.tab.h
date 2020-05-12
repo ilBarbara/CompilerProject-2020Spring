@@ -44,11 +44,7 @@
      FLOAT = 260,
      DELIM = 261,
      WHITESPACE = 262,
-     LEFTBRACKET = 263,
-     RIGHTBRACKET = 264,
-     LEFTANGLE = 265,
-     RIGHTANGLE = 266,
-     EXACTLYDIVIDE = 267
+     EXACTLYDIVIDE = 263
    };
 #endif
 /* Tokens.  */
@@ -57,11 +53,7 @@
 #define FLOAT 260
 #define DELIM 261
 #define WHITESPACE 262
-#define LEFTBRACKET 263
-#define RIGHTBRACKET 264
-#define LEFTANGLE 265
-#define RIGHTANGLE 266
-#define EXACTLYDIVIDE 267
+#define EXACTLYDIVIDE 263
 
 
 
