@@ -351,7 +351,20 @@ namespace Boost
 
             void set_boundary(std::map<std::string, std::pair<int, int>> &global_map, std::pair<int, int> bound) const
             {
-                global_map.insert(std::make_pair(value_, bound));
+                if (global_map.find(value_) == global_map.end())
+                    global_map.insert(std::make_pair(value_, bound));
+                else
+                {
+                    std::pair<int, int> exist_bound = global_map[value_];
+                    exist_bound.first = std::max(exist_bound.first, bound.first);
+                    exist_bound.second = std::min(exist_bound.second, bound.second);
+                    if (exist_bound.second <= exist_bound.first)
+                    {
+                        exist_bound.first = 0;
+                        exist_bound.second = 0;
+                    }
+                    global_map.insert(std::make_pair(value_, exist_bound));
+                }
             }
         };
 

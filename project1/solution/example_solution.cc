@@ -49,7 +49,11 @@ void kernel_example(float (&B)[32][16], float (&C)[32][16], float (&A)[32][16]) 
     //演示返回的是id节点。下面这一行进行类型强转，访问id节点的value属性，输出到example.cc里，所以make的时候会报错。
     // ofile << (std::dynamic_pointer_cast<const Boost::Internal::Kernel>(myroot.real_ptr())->stmt_list.size());
     // ofile << str;
-    ofile << global_map.size();
+    for (std::pair<std::string, std::pair<int, int>> item : global_map)
+    {
+        ofile << item.first << ' ' << item.second.first << ' ' << item.second.second << std::endl;
+    }
+
     ofile.close();
     return 0;
 }
