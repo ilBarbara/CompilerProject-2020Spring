@@ -30,7 +30,7 @@
 #include <set>
 #include <map>
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 
 #include "type.h"
 #include "arith.h"
