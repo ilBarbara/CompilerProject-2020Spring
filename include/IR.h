@@ -948,6 +948,13 @@ namespace Boost
             LocalToLocal
         };
 
+        enum class MoveOp : uint8_t
+        {
+            Equal,
+            Plus,
+            Minus
+        };
+
         /**
  * assign statement: load and store are put together
  * - evaluate: when dst is nullptr
@@ -959,6 +966,7 @@ namespace Boost
             Expr src;
             // TODO: is this necessary?
             MoveType move_type;
+            MoveOp move_op;
 
             Move(Expr _dst, Expr _src, MoveType _move_type) : StmtNode(IRNodeType::Move), dst(_dst), src(_src), move_type(_move_type) {}
 

@@ -45,6 +45,10 @@ DEFAULT_TYPE RHS_1(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
     Expr RHS_1_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(RHS_1.real_ptr()));
     Expr RHS_2_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(RHS_2.real_ptr()));
     std::shared_ptr<Binary> RHS_ptr = std::make_shared<Binary>(Type::float_scalar(32), BinaryOpType::Add, RHS_1_ptr, RHS_2_ptr);
+    for (std::string varname : RHS_1_ptr->variables)
+        RHS_ptr->variables.insert(varname);
+    for (std::string varname : RHS_2_ptr->variables)
+        RHS_ptr->variables.insert(varname);
     return DEFAULT_TYPE(RHS_ptr);
 };
 DEFAULT_TYPE RHS_2(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
@@ -54,6 +58,10 @@ DEFAULT_TYPE RHS_2(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
     Expr RHS_1_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(RHS_1.real_ptr()));
     Expr RHS_2_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(RHS_2.real_ptr()));
     std::shared_ptr<Binary> RHS_ptr = std::make_shared<Binary>(Type::float_scalar(32), BinaryOpType::Mul, RHS_1_ptr, RHS_2_ptr);
+    for (std::string varname : RHS_1_ptr->variables)
+        RHS_ptr->variables.insert(varname);
+    for (std::string varname : RHS_2_ptr->variables)
+        RHS_ptr->variables.insert(varname);
     return DEFAULT_TYPE(RHS_ptr);
 };
 DEFAULT_TYPE RHS_3(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
@@ -63,6 +71,10 @@ DEFAULT_TYPE RHS_3(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
     Expr RHS_1_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(RHS_1.real_ptr()));
     Expr RHS_2_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(RHS_2.real_ptr()));
     std::shared_ptr<Binary> RHS_ptr = std::make_shared<Binary>(Type::float_scalar(32), BinaryOpType::Sub, RHS_1_ptr, RHS_2_ptr);
+    for (std::string varname : RHS_1_ptr->variables)
+        RHS_ptr->variables.insert(varname);
+    for (std::string varname : RHS_2_ptr->variables)
+        RHS_ptr->variables.insert(varname);
     return DEFAULT_TYPE(RHS_ptr);
 };
 DEFAULT_TYPE RHS_4(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
@@ -72,6 +84,10 @@ DEFAULT_TYPE RHS_4(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
     Expr RHS_1_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(RHS_1.real_ptr()));
     Expr RHS_2_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(RHS_2.real_ptr()));
     std::shared_ptr<Binary> RHS_ptr = std::make_shared<Binary>(Type::float_scalar(32), BinaryOpType::Div, RHS_1_ptr, RHS_2_ptr);
+    for (std::string varname : RHS_1_ptr->variables)
+        RHS_ptr->variables.insert(varname);
+    for (std::string varname : RHS_2_ptr->variables)
+        RHS_ptr->variables.insert(varname);
     return DEFAULT_TYPE(RHS_ptr);
 };
 DEFAULT_TYPE RHS_5(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
@@ -81,6 +97,10 @@ DEFAULT_TYPE RHS_5(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
     Expr RHS_1_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(RHS_1.real_ptr()));
     Expr RHS_2_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(RHS_2.real_ptr()));
     std::shared_ptr<Binary> RHS_ptr = std::make_shared<Binary>(Type::float_scalar(32), BinaryOpType::Mod, RHS_1_ptr, RHS_2_ptr);
+    for (std::string varname : RHS_1_ptr->variables)
+        RHS_ptr->variables.insert(varname);
+    for (std::string varname : RHS_2_ptr->variables)
+        RHS_ptr->variables.insert(varname);
     return DEFAULT_TYPE(RHS_ptr);
 };
 DEFAULT_TYPE RHS_6(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
@@ -90,6 +110,10 @@ DEFAULT_TYPE RHS_6(DEFAULT_TYPE RHS_1, DEFAULT_TYPE RHS_2)
     Expr RHS_1_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(RHS_1.real_ptr()));
     Expr RHS_2_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(RHS_2.real_ptr()));
     std::shared_ptr<Binary> RHS_ptr = std::make_shared<Binary>(Type::float_scalar(32), BinaryOpType::ExactlyDiv, RHS_1_ptr, RHS_2_ptr);
+    for (std::string varname : RHS_1_ptr->variables)
+        RHS_ptr->variables.insert(varname);
+    for (std::string varname : RHS_2_ptr->variables)
+        RHS_ptr->variables.insert(varname);
     return DEFAULT_TYPE(RHS_ptr);
 };
 DEFAULT_TYPE RHS_7(DEFAULT_TYPE RHS_1)
@@ -112,6 +136,7 @@ DEFAULT_TYPE RHS_9(DEFAULT_TYPE RHS_1)
     //RHS:Expr
     Expr RHS_1_ptr = Expr(std::dynamic_pointer_cast<const ExprNode>(RHS_1.real_ptr()));
     std::shared_ptr<Unary> RHS_ptr = std::make_shared<Unary>(Type::float_scalar(32), UnaryOpType::Bracket, RHS_1_ptr);
+    RHS_ptr->variables = RHS_1_ptr->variables;
     return RHS_ptr;
 };
 
@@ -131,6 +156,9 @@ DEFAULT_TYPE MyTRefBuilder(DEFAULT_TYPE val, DEFAULT_TYPE clist, DEFAULT_TYPE al
         size_t rbound = clist_ptr->shape[i];
         alist_ptr->args[i].real_ptr()->set_boundary(global_map, std::make_pair(0, rbound));
     }
+    for (Expr IdExpr_ptr : (alist_ptr->args))
+        for (std::string item : (IdExpr_ptr->variables))
+            tref_ptr->variables.insert(item);
     return DEFAULT_TYPE(tref_ptr);
 };
 
