@@ -93,7 +93,16 @@ void IRTermFinder::getForStmtGroup()
     {
         std::vector<Expr> index_vec;
         std::shared_ptr<const ExprNode> ptr = std::dynamic_pointer_cast<const ExprNode>(term_group_ptr->term_ptr.real_ptr());
+        std::set<std::string> variables;
+        for (std::string varname : term_group_ptr->lhs->variables)
+        {
+            variables.insert(varname);
+        }
         for (std::string varname : ptr->variables)
+        {
+            variables.insert(varname);
+        }
+        for (std::string varname : variables)
         {
             std::pair<int, int> item = global_map[varname];
             Expr dom = Dom::make(Type::int_scalar(32), item.first, item.second);
