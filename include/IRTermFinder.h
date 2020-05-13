@@ -23,6 +23,7 @@ namespace Boost
             std::shared_ptr<LoopNest> for_stmt_group = nullptr;
             std::shared_ptr<IfThenElse> if_stmt_group = nullptr;
             std::shared_ptr<Move> move_stmt = nullptr;
+            std::shared_ptr<Var> lhs, lhs_temp;
 
             template <typename U, typename std::enable_if<std::is_base_of<IRNode, U>::value>::type * = nullptr>
             term_group(std::shared_ptr<const U> _ptr, BinaryOpType _op)
