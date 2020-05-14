@@ -23,7 +23,9 @@
 */
 
 #include "IRPrinter.h"
-
+#include <typeinfo>
+#include <set>
+using namespace std;
 namespace Boost {
 
 namespace Internal {
@@ -51,31 +53,38 @@ std::string IRPrinter::print(const Group &group) {
 
 
 void IRPrinter::visit(Ref<const IntImm> op) {
-    oss << "(" << op->type() << " " << op->value() << ")";
+    oss << "(" << " " << op->value() << ")";
 }
 
 
 void IRPrinter::visit(Ref<const UIntImm> op) {
-    oss << "(" << op->type() << " " << op->value() << ")";
+    oss << "(" << " " << op->value() << ")";
 }
 
 
 void IRPrinter::visit(Ref<const FloatImm> op) {
-    oss << "(" << op->type() << " " << op->value() << ")";
+    oss << "(" << " " << op->value() << ")";
 }
 
 
 void IRPrinter::visit(Ref<const StringImm> op) {
-    oss << "(" << op->type() << " " << op->value() << ")";
+    oss << " " << op->value() ;
 }
 
 
 void IRPrinter::visit(Ref<const Unary> op) {
+    if(op->op_type == UnaryOpType::Paren)
+    {
+        oss << "(";
+        (op->a).visit_expr(this);
+        oss << ")";
+        return;
+    }
     if (op->op_type == UnaryOpType::Neg) {
         oss << "-";
     } else if (op->op_type == UnaryOpType::Not) {
         oss << "!";
-    }
+    } 
     (op->a).visit_expr(this);
 }
 
@@ -163,25 +172,12 @@ void IRPrinter::visit(Ref<const Ramp> op) {
 
 void IRPrinter::visit(Ref<const Var> op) {
     oss << op->name;
-    if (print_arg) {
-        oss << "<";
-        for (size_t i = 0; i < op->shape.size(); ++i) {
-            oss << op->shape[i];
-            if (i < op->shape.size() - 1) {
-                oss << ", ";
-            }
-        }
-        oss << ">";
-    } else {
-    oss << "[";
-        for (size_t i = 0; i < op->args.size(); ++i) {
-            op->args[i].visit_expr(this);
-            if (i < op->args.size() - 1) {
-                oss << ", ";
-            }
-        }
+    for (size_t i = 0; i < op->args.size(); ++i) {
+        oss << "[";
+        op->args[i].visit_expr(this);
         oss << "]";
     }
+        
 }
 
 
@@ -196,24 +192,13 @@ void IRPrinter::visit(Ref<const Dom> op) {
 
 void IRPrinter::visit(Ref<const Index> op) {
     oss << op->name;
-    if (print_range) {
-        oss << "<";
-        if (op->index_type == IndexType::Spatial) {
-            oss << "spatial";
-        } else if (op->index_type == IndexType::Reduce) {
-            oss << "reduce";
-        } else if (op->index_type == IndexType::Unrolled) {
-            oss << "unrolled";
-        } else if (op->index_type == IndexType::Vectorized) {
-            oss << "vectorized";
-        } else if (op->index_type == IndexType::Block) {
-            oss << "block";
-        } else if (op->index_type == IndexType::Thread) {
-            oss << "thread";
-        }
-        oss << "> in ";
-        (op->dom).visit_expr(this);
-    }
+    oss << " = 0; ";
+    oss << op->name;
+    oss << " < ";
+    oss << op->dom->extent;
+    oss << "; ";
+    oss << op->name;
+    oss << "++";
 }
 
 
@@ -221,8 +206,9 @@ void IRPrinter::visit(Ref<const LoopNest> op) {
     print_range = true;
     for (auto index : op->index_list) {
         print_indent();
-        oss << "for ";
+        oss << "for (";
         index.visit_expr(this);
+        cout << ")";
         oss << "{\n";
         enter();
     }
@@ -255,11 +241,58 @@ void IRPrinter::visit(Ref<const IfThenElse> op) {
     oss << "}\n";
 }
 
+set<string> tmp_index; 
+void find_index(Ref<const Binary> op)
+{
+    find_index(op->a);
+    find_index(op->b);
+}
+
+void find_index(Ref<const Unary> op)
+{
+    find_index(op->a);
+}
+
+void find_index(Ref<const Var> op)
+{
+    for(auto i : op->args)
+    {
+        if(typeid(i) == typeid(Var))
+        {
+            tmp_index.insert(i->name);
+        }
+    }
+}
 
 void IRPrinter::visit(Ref<const Move> op) {
     print_indent();
-    (op->dst).visit_expr(this);
-    oss << " =<";
+    if(typeid(*(op->src)) == typeid(Binary) && 
+        (op->src->op_type == Add || op->src->op_type == Sub))
+    {
+        auto t0 = op->src->a;
+        auto t1 = op->src->b;
+        auto t2 = Binary::make(data_type, op->src->op_type, op->dst, t0);
+        auto t3 = Binary::make(data_type, op->src->op_type, op->dst, t1);
+        auto tmp0 = Move::make(op->dst, t2, MemToMem);
+        auto tmp1 = Move::make(op->dst, t3, MemToMem);
+        tmp0.visit_stmt(this);
+        tmp1.visit_stmt(this);
+    }
+    else
+    {
+        tmp_index.clear();
+        find_index(op->dst);
+        find_index(op->src);
+        vector<Expr> index0;
+        for(auto i : tmp_index)
+        {   
+            index0.push_back(indexlist[i]);
+        }
+        auto xi = LoopNest::make(index0, op);
+        xi.visit_stmt(this);
+    }
+
+            /*
     if (op->move_type == MoveType::HostToDevice) {
         oss << "host_to_device";
     } else if (op->move_type == MoveType::MemToShared) {
@@ -281,36 +314,48 @@ void IRPrinter::visit(Ref<const Move> op) {
     } else if (op->move_type == MoveType::LocalToLocal) {
         oss << "local_to_local";
     }
-    oss << "> ";
-    (op->src).visit_expr(this);
-    oss << "\n";
+    */
 }
+
 
 
 void IRPrinter::visit(Ref<const Kernel> op) {
     print_indent();
+    /*
     if (op->kernel_type == KernelType::CPU) {
         oss << "<CPU>";
     } else if (op->kernel_type == KernelType::GPU) {
         oss << "<GPU>";
     }
-    oss << " " << op->name << "(";
+    */
+    oss << "void " << op->name << "(";
     print_arg = true;
     for (size_t i = 0; i < op->inputs.size(); ++i) {
-        op->inputs[i].visit_expr(this);
+        //op->inputs[i].visit_expr(this);
+        oss << op->datatype << " (&" << op->inputs[i]->name << ")";
+        for (auto shape : op->inputs[i]->shape)
+            oss << "[" << shape << "]";
         if (i < op->inputs.size() - 1) {
             oss << ", ";
         }
     }
     for (size_t i = 0; i < op->outputs.size(); ++i) {
-        oss << ", ";
-        op->outputs[i].visit_expr(this);
+        //op->inputs[i].visit_expr(this);
+        oss << op->datatype << " (&" << op->outputs[i]->name << ")";
+        for (auto shape : op->outputs[i]->shape)
+            oss << "[" << shape << "]";
+        if (i < op->outputs.size() - 1) {
+            oss << ", ";
+        }
     }
     print_arg = false;
     oss << ") {\n";
     enter();
     for (auto stmt : op->stmt_list) {
-        stmt.visit_stmt(this);
+        auto tmp0 = Var::make(data_type, 0, "tmp", stmt->dst->args, stmt->dst->shape);
+        auto tmp1 = Binary::make(data_type, Add, tmp0, stmt->src);
+        auto temp = Move::make(tmp0, tmp1, MemToMem);
+        temp.visit_stmt(this);
     }
     exit();
     oss << "}\n";
