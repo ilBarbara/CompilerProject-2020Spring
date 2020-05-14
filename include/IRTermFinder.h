@@ -1,5 +1,5 @@
-#ifndef BOOST_IRPRINTER_H
-#define BOOST_IRPRINTER_H
+#ifndef BOOST_IRTERMFINDER_H
+#define BOOST_IRTERMFINDER_H
 
 #include <string>
 #include <sstream>
@@ -63,4 +63,4 @@ namespace Boost
 
 } // namespace Boost
 
-#endif // BOOST_IRPRINTER_H
+#endif // BOOST_IRTERMFINDER_H
