@@ -1376,7 +1376,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 18 ".\\second.y"
-    {myroot=(yyvsp[(1) - (1)]);}
+    {myroot=MyPBuilder((yyvsp[(1) - (1)]));}
     break;
 
   case 3:

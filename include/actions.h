@@ -50,4 +50,6 @@ Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_action_3(Boost::Inter
 Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_action_4(Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_1, Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_2);
 
 Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_action_5(Boost::Internal::Ref<const Boost::Internal::IRNode> IdExpr_1);
+
+Boost::Internal::Ref<const Boost::Internal::IRNode> MyPBuilder(Boost::Internal::Ref<const Boost::Internal::IRNode> P);
 #endif

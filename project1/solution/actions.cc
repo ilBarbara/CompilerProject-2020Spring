@@ -1,8 +1,10 @@
 #include "../../include/actions.h"
+#include "../../include/IRTermFinder.h"
 
 using namespace Boost::Internal;
 #define DEFAULT_TYPE Ref<const IRNode>
 std::map<std::string, std::pair<int, int>> global_map;
+std::map<std::string, std::vector<size_t>> global_shape_map;
 DEFAULT_TYPE Alist_action_1(DEFAULT_TYPE Alist, DEFAULT_TYPE IdExpr)
 {
     //Alist:Ref<Var>
@@ -159,6 +161,7 @@ DEFAULT_TYPE MyTRefBuilder(DEFAULT_TYPE val, DEFAULT_TYPE clist, DEFAULT_TYPE al
     for (Expr IdExpr_ptr : (alist_ptr->args))
         for (std::string item : (IdExpr_ptr->variables))
             tref_ptr->variables.insert(item);
+    global_shape_map.insert(std::make_pair(Id_ptr->value(), clist_ptr->shape));
     return DEFAULT_TYPE(tref_ptr);
 };
 
@@ -167,6 +170,7 @@ DEFAULT_TYPE MySRefBuilder(DEFAULT_TYPE val, DEFAULT_TYPE clist)
     std::shared_ptr<StringImm> Id_ptr = std::const_pointer_cast<StringImm>(std::dynamic_pointer_cast<const StringImm>(val.real_ptr()));
     std::shared_ptr<Var> clist_ptr = std::const_pointer_cast<Var>(std::dynamic_pointer_cast<const Var>(clist.real_ptr()));
     std::shared_ptr<Var> sref_ptr = std::make_shared<Var>(Type::float_scalar(32), Id_ptr->value(), std::vector<Expr>(), clist_ptr->shape);
+    global_shape_map.insert(std::make_pair(Id_ptr->value(), clist_ptr->shape));
     return DEFAULT_TYPE(sref_ptr);
 };
 
@@ -257,4 +261,32 @@ DEFAULT_TYPE IdExpr_action_5(DEFAULT_TYPE IdExpr_1)
     std::shared_ptr<Unary> ptr = std::make_shared<Unary>(Type::float_scalar(32), UnaryOpType::Bracket, IdExpr_1_ptr);
     ptr->variables = IdExpr_1_ptr->variables;
     return ptr;
+}
+DEFAULT_TYPE MyPBuilder(DEFAULT_TYPE P)
+{
+    int count = 0;
+    std::shared_ptr<Kernel> converted_kernel = std::make_shared<Kernel>("", std::vector<Expr>(), std::vector<Expr>(), std::vector<Stmt>(), KernelType::CPU);
+    for (Stmt stmt : std::dynamic_pointer_cast<const Kernel>(P.real_ptr())->stmt_list)
+    {
+        count += 1;
+        IRTermFinder finder;
+        stmt.visit_stmt(&finder);
+        finder.getMoveStmt();
+        finder.getIfStmtGroup();
+        finder.getForStmtGroup();
+        finder.getOuterLoop();
+        std::shared_ptr<Var> temp_ptr = finder._lhs_temp;
+        temp_ptr->name = "temp" + std::to_string(count);
+        std::shared_ptr<Var> declare_ptr = std::make_shared<Var>(temp_ptr->type(), temp_ptr->name, std::vector<Expr>(), temp_ptr->shape);
+        for (size_t size : declare_ptr->shape)
+        {
+            declare_ptr->args.push_back(int(size));
+        }
+        std::shared_ptr<Move> move_ptr = std::make_shared<Move>(Expr(std::const_pointer_cast<const Var>(declare_ptr)), Expr(std::const_pointer_cast<const Var>(declare_ptr)), MoveType::MemToMem);
+        move_ptr->move_op = MoveOp::Declare;
+        converted_kernel->stmt_list.push_back(Stmt(move_ptr));
+        converted_kernel->stmt_list.push_back(Stmt(finder.outer_loop1));
+        converted_kernel->stmt_list.push_back(Stmt(finder.outer_loop2));
+    }
+    return converted_kernel;
 }

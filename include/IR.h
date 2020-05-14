@@ -952,7 +952,9 @@ namespace Boost
         {
             Equal,
             Plus,
-            Minus
+            Minus,
+            Zero,
+            Declare
         };
 
         /**
@@ -987,7 +989,8 @@ namespace Boost
             GPU
         };
 
-        class Kernel : public GroupNode, public std::enable_shared_from_this<Kernel>
+        class Kernel : public GroupNode,
+                       public std::enable_shared_from_this<Kernel>
         {
         public:
             std::string name;
@@ -995,6 +998,7 @@ namespace Boost
             std::vector<Expr> outputs;
             std::vector<Stmt> stmt_list;
             KernelType kernel_type;
+            std::string printer_data_type;
 
             Kernel(const std::string &_name, const std::vector<Expr> &_inputs,
                    const std::vector<Expr> &_outputs, const std::vector<Stmt> &_stmt_list, KernelType _kernel_type) : GroupNode(IRNodeType::Kernel), name(_name), inputs(_inputs), outputs(_outputs),

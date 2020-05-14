@@ -13,6 +13,7 @@
 #include "../../include/y.tab.h"
 
 extern std::map<std::string, std::pair<int, int>> global_map;
+extern std::map<std::string, std::vector<size_t>> global_shape_map;
 int main()
 {
     std::string cheat_src =
@@ -32,7 +33,7 @@ void kernel_example(float (&B)[32][16], float (&C)[32][16], float (&A)[32][16]) 
     Json::Value root;
     JSONCPP_STRING errs;
     std::ofstream ofile("./kernels/kernel_example.cc", std::ios::out);
-    std::ifstream infile("./cases/case10.json", std::ios::binary);
+    std::ifstream infile("./cases/case4.json", std::ios::binary);
     if (!infile.is_open())
     {
         std::cout << "open file failed";
@@ -43,16 +44,42 @@ void kernel_example(float (&B)[32][16], float (&C)[32][16], float (&A)[32][16]) 
         std::cout << "parse failed";
     }
     std::string str = root["kernel"].asString();
-
-    myroot = yyparse_string((char *)("A<8, 8>[i, j] = (B<10, 10>[i, j] + B<10, 10>[i + 5, j] + B<10, 10>[(i + 5)%2//3, (j+1)*2]) / 3;"));
+    myroot = yyparse_string((char *)(str.c_str()));
+    std::shared_ptr<Boost::Internal::Kernel> myroot_kernel = std::const_pointer_cast<Boost::Internal::Kernel>(std::dynamic_pointer_cast<const Boost::Internal::Kernel>(myroot.real_ptr()));
+    std::set<std::string> array_recorded;
+    for (auto item : root["ins"])
+    {
+        std::string varname = item.asString();
+        if (array_recorded.find(varname) != array_recorded.end())
+            continue;
+        array_recorded.insert(varname);
+        std::shared_ptr<Boost::Internal::Var> ptr = std::make_shared<Boost::Internal::Var>(Boost::Internal::Type::float_scalar(32), "(&" + varname + ")", std::vector<Boost::Internal::Expr>(), global_shape_map[varname]);
+        for (auto dim : ptr->shape)
+        {
+            ptr->args.push_back(int(dim));
+        }
+        myroot_kernel->inputs.push_back(std::const_pointer_cast<const Boost::Internal::Var>(ptr));
+    }
+    for (auto item : root["outs"])
+    {
+        std::string varname = item.asString();
+        if (array_recorded.find(varname) != array_recorded.end())
+            continue;
+        array_recorded.insert(varname);
+        std::shared_ptr<Boost::Internal::Var> ptr = std::make_shared<Boost::Internal::Var>(Boost::Internal::Type::float_scalar(32), "(&" + varname + ")", std::vector<Boost::Internal::Expr>(), global_shape_map[varname]);
+        for (auto dim : ptr->shape)
+        {
+            ptr->args.push_back(int(dim));
+        }
+        myroot_kernel->outputs.push_back(std::const_pointer_cast<const Boost::Internal::Var>(ptr));
+    }
+    myroot_kernel->printer_data_type = root["data_type"].asString();
+    myroot_kernel->name = root["name"].asString();
     ofile << cheat_src;
     //演示返回的是id节点。下面这一行进行类型强转，访问id节点的value属性，输出到example.cc里，所以make的时候会报错。
     // ofile << (std::dynamic_pointer_cast<const Boost::Internal::Kernel>(myroot.real_ptr())->stmt_list.size());
     // ofile << str;
-    for (std::pair<std::string, std::pair<int, int>> item : global_map)
-    {
-        ofile << item.first << ' ' << item.second.first << ' ' << item.second.second << std::endl;
-    }
+    ofile << myroot_kernel->name;
 
     ofile.close();
     return 0;

@@ -7,5 +7,4 @@ void kernel_example(float (&B)[32][16], float (&C)[32][16], float (&A)[32][16]) 
             A[i][j] = B[i][j] * C[i][j];
         }
     }
-}i 0 5
-j 0 8
+}kernel_case4

@@ -15,7 +15,7 @@ YYSTYPE myroot;
 
 %%
 
-FINAL : P {myroot=$1;}
+FINAL : P {myroot=MyPBuilder($1);}
 
 P :  P S {$$=P_action_1($1,$2);}
     |S {$$=P_action_2($1);}

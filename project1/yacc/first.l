@@ -30,6 +30,7 @@ whitespace ({delim}+)
 ">" {return '>';}
 "[" {return '[';}
 "]" {return ']';}
+"%" {return '%';}
 "//" {return EXACTLYDIVIDE;}
 %%
 int yywrap()
